@@ -5,19 +5,25 @@
         lastName
         placeOfBirth
         dateOfBirth
-        photoFileName
         parents {
             firstName
+            middleName
             lastName
         }
         children {
             firstName
+            middleName
+            lastName
         }
         siblings {
             firstName
+            middleName
+            lastName
         }
         spouses {
             firstName
+            middleName
+            lastName
         }
     }
 }
