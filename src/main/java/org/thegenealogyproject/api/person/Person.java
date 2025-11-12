@@ -1,17 +1,13 @@
 package org.thegenealogyproject.api.person;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,15 +15,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "people")
+@Node("People")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
+    @EqualsAndHashCode.Include
     private UUID id;
 
     private String firstName;
@@ -44,36 +41,16 @@ public class Person {
 
     private LocalDate dateOfDeath;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "person_parents",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "parent_id")
-    )
-    private Set<Person> parents = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "person_children",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_id")
-    )
+    @Relationship(type = "PARENT_OF", direction = Relationship.Direction.OUTGOING)
     private Set<Person> children = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "person_siblings",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "sibling_id")
-    )
+    @Relationship(type = "PARENT_OF", direction = Relationship.Direction.INCOMING)
+    private Set<Person> parents = new HashSet<>();
+
+    @Relationship(type = "SIBLING_OF", direction = Relationship.Direction.OUTGOING)
     private Set<Person> siblings = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "person_spouses",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "spouse_id")
-    )
+    @Relationship(type = "SPOUSE_OF", direction = Relationship.Direction.OUTGOING)
     private Set<Person> spouses = new HashSet<>();
 
     public int calculateAge() {
