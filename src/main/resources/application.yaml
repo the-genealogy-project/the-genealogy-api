@@ -8,13 +8,3 @@ spring:
       enabled: true
     cors:
       allowed-origins: "*"
-  servlet:
-    multipart:
-      max-file-size: 1048576 # 1MB
-
-the-genealogy-project:
-  file-extensions-config:
-    allowed-file-extensions: jpg,jpeg,png,bmp
-
-  photo-upload-directory-path:
-    people: ${UPLOADS_DIRECTORY_PATH}
