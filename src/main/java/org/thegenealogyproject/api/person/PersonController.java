@@ -10,10 +10,10 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 public class PersonController {
-    private final PersonService personService;
+    private final PersonQueryService personQueryService;
 
     @QueryMapping(name = "person")
     public Person person(@Argument UUID id) {
-        return personService.getPerson(id);
+        return personQueryService.getPerson(id);
     }
 }

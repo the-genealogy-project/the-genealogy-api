@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class PersonServiceImpl implements PersonService {
+public class PersonQueryServiceImpl implements PersonQueryService {
     private final PersonRepository personRepository;
 
     @Override
