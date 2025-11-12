@@ -24,7 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Person extends PhotoEntity {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,8 +43,6 @@ public class Person extends PhotoEntity {
     private String placeOfDeath;
 
     private LocalDate dateOfDeath;
-
-    private String photoFileName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -77,16 +75,6 @@ public class Person extends PhotoEntity {
             inverseJoinColumns = @JoinColumn(name = "spouse_id")
     )
     private Set<Person> spouses = new HashSet<>();
-
-    @Override
-    public String getPhotoFileName() {
-        return photoFileName;
-    }
-
-    @Override
-    public void setPhotoFileName(String photoFileName) {
-        this.photoFileName = photoFileName;
-    }
 
     public int calculateAge() {
         return dateOfDeath == null ?
